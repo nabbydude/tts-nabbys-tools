@@ -1,0 +1,58 @@
+--[[
+  A script for converting hand scales to real world units and vice versa.
+  it has two main exported methods: `worldToHand()` and `handToWorld()`.
+  
+  Usage example:
+    handTools = require("hand-tools")
+
+    Player.White.setHandTransform({
+      position = {0, 2, 20},
+      rotation = {0, 0, 0},
+      scale = handTools.worldToHand({10, 5, 5})
+    })
+  
+  hand scaling depends on the table used for your mod (since hands are linked to
+  the table). `detectTableType()` is called on module load to detect which table
+  is loaded, if you change tables then you must save and reload or call it again
+  for the calculations to work properly.
+
+  (some values are hand-measured and only precise to ~3 decimal points)
+]]
+
+local ht = {}
+
+ht.scales = {
+  Table_Square = Vector{1.175, 1.175, 1.175},
+  Table_Hexagon = Vector{1.175, 1.175, 1.175},
+  Table_Octagon = Vector{1.3125, 1.5855, 1.3125},
+  Table_Circular = Vector{1.625, 1.62325, 1.625},
+  Table_Poker = Vector{4/3, 4/3, 4/3},
+  Table_RPG = Vector{1.64024, 1.624, 1.624},
+  Table_Glass = Vector{1.625, 1.62325, 1.625},
+  Table_Custom = Vector{1.315, 1.296753, 1.3036},
+  Table_Custom_Square = Vector{1.18552, 1.18552, 1.18552},
+  Table_None = Vector{1.315, 1.296753, 1.3036}
+}
+
+function ht.handToWorld(vec)
+  return Vector(vec):scale(ht.scales[ht.tableType])
+end
+
+function ht.worldToHand(vec)
+  local hs = ht.scales[ht.tableType]
+  return Vector(vec):scale(Vector{1 / hs.x, 1 / hs.y, 1 / hs.z})
+end
+
+function ht.detectTableType()
+  for _, tbl in ipairs(Physics.cast({ origin = {0, 1, 0}, direction = {0, -1, 0} })) do
+    if tbl.hit_object.tag == "Surface" then
+      ht.tableType = tbl.hit_object.name
+      return
+    end
+  end
+  ht.tableType = "Table_None"
+end
+
+ht.detectTableType() -- autodetect on load
+
+return ht
