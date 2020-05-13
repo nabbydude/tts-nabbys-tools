@@ -15,23 +15,21 @@
   the table). `detectTableType()` is called on module load to detect which table
   is loaded, if you change tables then you must save and reload or call it again
   for the calculations to work properly.
-
-  (some values are hand-measured and only precise to ~3 decimal points)
 ]]
 
 local ht = {}
 
 ht.scales = {
-  Table_Square = Vector{1.175, 1.175, 1.175},
-  Table_Hexagon = Vector{1.175, 1.175, 1.175},
-  Table_Octagon = Vector{1.3125, 1.5855, 1.3125},
-  Table_Circular = Vector{1.625, 1.62325, 1.625},
-  Table_Poker = Vector{4/3, 4/3, 4/3},
-  Table_RPG = Vector{1.64024, 1.624, 1.624},
-  Table_Glass = Vector{1.625, 1.62325, 1.625},
+  Table_Square = Vector{1.174093, 1.174093, 1.174093},
+  Table_Hexagon = Vector{1.174093, 1.174093, 1.174093},
+  Table_Octagon = Vector{1.311487, 1.585984, 1.311487},
+  Table_Circular = Vector{1.623746, 1.623746, 1.623746},
+  Table_Poker = Vector{1.341821, 1.341821, 1.341821},
+  Table_RPG = Vector{1.639983, 1.623745, 1.623746},
+  Table_Glass = Vector{1.623746, 1.623746, 1.623746},
   Table_Custom = Vector{1.315, 1.296753, 1.3036},
-  Table_Custom_Square = Vector{1.18552, 1.18552, 1.18552},
-  Table_None = Vector{1.315, 1.296753, 1.3036}
+  Table_Custom_Square = Vector{1.185335, 1.185335, 1.185335},
+  Table_None = Vector{1.315, 1.3036, 1.296753}
 }
 
 function ht.handToWorld(vec)
